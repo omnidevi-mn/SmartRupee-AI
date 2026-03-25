@@ -1,276 +1,166 @@
-# SmartRupee AI 🚀
+# SmartRupee AI
 
-A modern, production-ready personal finance tracker built with React, TypeScript, Tailwind CSS, and Supabase. Track your income and expenses in Indian Rupees (INR) with AI-powered insights from Google Gemini.
+Production-ready personal finance tracker for Indian users, built with React, TypeScript, Tailwind, and Supabase, with Gemini-powered AI features for receipts and budget forecasting.
 
-## ✨ Features
+Project done by Joshua Haniel J and N Omni Devi.
 
-- 🔐 **Secure Authentication** - Email/password authentication via Supabase Auth
-- 💰 **Transaction Management** - Add, view, filter, and export transactions
-- � **AI Receipt Scanner** - Drag-and-drop receipt images, parsed by Gemini Vision to auto-fill transactions
-- 🧠 **AI Budget Forecaster** - Set monthly budgets and get AI-powered spending trajectory predictions
-- 📊 **Interactive Dashboard** - Beautiful charts with Recharts (Pie & Line charts) + AI forecast cards
-- 🎨 **Modern UI** - Dark glassmorphism theme with Tailwind CSS + daisyUI + shadcn-style
-- ✨ **3D Experience** - Immersive Spline 3D scenes on login and signup pages
-- 🔒 **Row Level Security** - Supabase RLS ensures data isolation per user
-- 📱 **Responsive Design** - Works perfectly on mobile and desktop
-- 🧪 **Type-Safe** - Full TypeScript support with Zod validation
-- ♿ **Accessible** - ARIA labels and semantic HTML
-- 🚀 **Fast** - Optimized with Vite 5 build tool
+## Why SmartRupee AI
 
-## 🛠️ Tech Stack
+SmartRupee AI helps users stay on top of day-to-day spending with fast transaction entry, meaningful dashboard insights, and AI assistance that reduces manual effort.
 
-- **Frontend**: React 18, TypeScript, Vite 5
-- **Styling**: Tailwind CSS, daisyUI, Framer Motion
-- **Backend**: Supabase (PostgreSQL, Auth, Storage, Edge Functions)
-- **AI**: Google Gemini 2.0 Flash (Vision + Text) via Supabase Edge Functions
-- **Charts**: Recharts
-- **Forms**: React Hook Form + Zod validation
-- **Icons**: Lucide React
-- **Date**: date-fns
-- **Export**: CSV export built-in
+## Core Features
 
-## 📦 Installation
+- Secure email/password authentication with Supabase Auth
+- Transaction management: create, filter, and export records
+- AI receipt scanner: parse receipt images into structured transaction data
+- AI budget forecaster: predict category overspend before month end
+- Dashboard analytics with pie and trend charts
+- Responsive UI for desktop and mobile
+- Row-level security policies for per-user data isolation
 
-### 1. Clone and Install
+## Technology Stack
+
+- Frontend: React 18, TypeScript, Vite 5
+- Styling: Tailwind CSS, daisyUI, Framer Motion
+- Backend: Supabase (PostgreSQL, Auth, Storage, Edge Functions)
+- AI: Google Gemini 2.0 Flash via Supabase Edge Functions
+- Charts: Recharts
+- Forms and validation: React Hook Form, Zod
+- Utilities: date-fns, Lucide icons
+
+## Quick Start
+
+### 1) Install dependencies
 
 ```powershell
-cd d:\Projects\Smart-Rupee
+cd d:\Projects\Joshua\Smart-Rupee
 npm install
 ```
 
-### 2. Environment Setup
-
-Copy the example environment file:
+### 2) Configure environment variables
 
 ```powershell
 copy .env.example .env.local
 ```
 
-Update `.env.local` with your Supabase credentials:
+Add the following values to `.env.local`:
 
 ```env
 VITE_SUPABASE_URL=https://your-project.supabase.co
 VITE_SUPABASE_ANON_KEY=your_anon_key_here
 ```
 
-### 3. Database Setup
+### 3) Set up Supabase schema
 
-1. Go to your [Supabase Dashboard](https://supabase.com/dashboard)
-2. Navigate to SQL Editor
-3. Copy and paste the contents of `supabase/schema.sql` and execute
-4. Then run `supabase/schema_upgrade_ai.sql` to add AI feature columns, storage bucket, and indexes
+Run these SQL files in order from the Supabase SQL Editor:
 
-### 4. Run Development Server
+1. `supabase/schema.sql`
+2. `supabase/schema_upgrade_ai.sql`
+
+### 4) Start development server
 
 ```powershell
 npm run dev
 ```
 
-Visit `http://localhost:5173`
+App URL: `http://localhost:5173`
 
-## 🗂️ Project Structure
+## AI Features
 
-```
+### Receipt Scanner
+
+- Upload formats: JPEG, PNG, WebP, HEIC
+- Max file size: 10 MB
+- Extracts vendor, total amount, date, category, and line items
+- Stores receipt images in private Supabase Storage bucket
+
+### Budget Forecast
+
+- Uses recent spending velocity (last 30 days)
+- Predicts end-of-month category totals
+- Highlights risk levels with actionable guidance
+
+## Security Model
+
+- Supabase RLS enforces strict per-user data access
+- Gemini API key is stored in Edge Function secrets
+- No client-side exposure of sensitive AI credentials
+
+## Project Structure
+
+```text
 Smart-Rupee/
-├── components/
-│   └── ui/                     # shadcn-style UI components
-│       ├── splite.tsx           # 3D Spline component
-│       ├── demo.tsx             # Demo scene
-│       ├── card.tsx             # Card primitive
-│       └── spotlight.tsx        # Spotlight effects
-├── src/
-│   ├── components/
-│   │   ├── Layout.tsx           # Main app layout with navigation
-│   │   ├── ProtectedRoute.tsx   # Auth guard wrapper
-│   │   ├── ReceiptScanner.tsx   # AI receipt scanner modal (Gemini Vision)
-│   │   └── BudgetForecast.tsx   # AI budget forecaster dashboard section
-│   ├── context/
-│   │   └── AuthContext.tsx      # Authentication state
-│   ├── lib/
-│   │   ├── supabase.ts          # Supabase client
-│   │   └── utils.ts             # Helper functions (cn, formatCurrency)
-│   ├── pages/
-│   │   ├── Login.tsx            # Login page with 3D scene
-│   │   ├── Register.tsx         # Registration page
-│   │   ├── Dashboard.tsx        # Dashboard with charts + AI forecast
-│   │   └── Transactions.tsx     # Transaction management + receipt scanner
-│   ├── services/
-│   │   ├── transactions.ts      # Transaction CRUD operations
-│   │   ├── ai.ts                # AI service (receipt parsing, budget forecast)
-│   │   └── budgets.ts           # Budget CRUD operations
-│   ├── App.tsx                  # Main app with routing
-│   ├── main.tsx                 # App entry point
-│   └── styles.css               # Global styles + Tailwind
-├── functions/
-│   └── gemini-proxy/            # Supabase Edge Function for AI
-│       └── index.ts             # 3 routes: parse-receipt, forecast-budget, generic
-├── supabase/
-│   ├── schema.sql               # Base database schema + RLS policies
-│   └── schema_upgrade_ai.sql    # AI feature schema (storage, indexes, columns)
-└── package.json
+|-- src/
+|   |-- components/
+|   |-- context/
+|   |-- lib/
+|   |-- pages/
+|   |-- services/
+|   |-- App.tsx
+|   |-- main.tsx
+|   `-- styles.css
+|-- functions/
+|   `-- gemini-proxy/
+|-- supabase/
+|   |-- schema.sql
+|   `-- schema_upgrade_ai.sql
+|-- components/
+|   `-- ui/
+`-- package.json
 ```
 
-## 🎯 Key Features Explained
-
-### Authentication
-- Supabase Auth with email/password
-- Protected routes with redirect to login
-- Automatic session management
-- 3D Spline scenes on login and registration pages
-
-### Transactions
-- Add income/expense transactions
-- Categorize transactions (Food & Dining, Transportation, Shopping, etc.)
-- Add notes and dates
-- Filter by type (all/income/expense)
-- Export to CSV
-- Real-time currency formatting in INR
-- **AI Receipt Scanner** — scan a receipt photo and auto-fill the transaction form
-
-### AI Receipt Scanner
-- Drag-and-drop or click-to-browse image upload
-- Supports JPEG, PNG, WebP, HEIC (max 10MB)
-- Gemini Vision extracts vendor, total, date, category, and line items
-- Preview parsed data with confidence score before saving
-- Receipts stored in private Supabase Storage bucket with per-user RLS
-
-### AI Budget Forecaster
-- Set monthly budgets per spending category
-- AI analyzes last 30 days of spending velocity
-- Predicts end-of-month totals per category
-- Color-coded status cards: green (on track), yellow (warning), red (over budget)
-- Progress bars showing % used and % projected
-- Actionable advice per category from Gemini
-- Overall financial health summary
-
-### Dashboard
-- Total balance, income, expenses stat cards
-- Editable initial balance
-- Pie chart showing expenses by category
-- Line chart showing 30-day income vs expenses trend
-- **AI Budget Forecast** section with per-category predictions
-- Recent transactions table
-- Responsive grid layout
-
-### UI Components
-- shadcn-style component architecture under `/components/ui`
-- 3D Spline scenes on login and registration pages (lazy-loaded)
-- Consistent card borders with border-base-300 for clean aesthetic
-- daisyUI theming with light/dark mode toggle
-- Lucide React icons throughout
-- Toast notifications for user feedback
-
-## 🔒 Security
-
-- **Row Level Security (RLS)**: Users can only access their own data
-- **API Keys**: Gemini API key stored in Supabase Edge Function secrets (never exposed to client)
-- **Authentication**: Supabase handles secure session management
-- **SQL Injection**: Protected by Supabase client's parameterized queries
-
-## 🚀 Deployment
-
-### Vercel / Netlify
-
-1. Push code to GitHub
-2. Connect repository to Vercel/Netlify
-3. Add environment variables:
-   - `VITE_SUPABASE_URL`
-   - `VITE_SUPABASE_ANON_KEY`
-4. Deploy!
-
-### Supabase Edge Functions (Required for AI features)
+## Development Commands
 
 ```powershell
-# Login to Supabase CLI
-npx supabase login
-
-# Set Gemini API key as secret
-npx supabase secrets set GEMINI_API_KEY=your_gemini_key --project-ref your-project-ref
-
-# Deploy the edge function
-npx supabase functions deploy gemini-proxy --project-ref your-project-ref
-```
-
-The edge function provides 3 routes:
-- `POST /parse-receipt` — Gemini Vision receipt parsing (accepts multipart form upload)
-- `POST /forecast-budget` — Gemini Text budget forecasting (queries DB server-side)
-- `POST /` — Generic Gemini proxy (fallback)
-
-## 🧪 Testing
-
-```powershell
-# Run tests
+npm run dev
 npm run test
-
-# Type check
 npm run typecheck
-
-# Build for production
 npm run build
 ```
 
-## 📝 Database Schema
+## Deployment
 
-### transactions
-- `id` (UUID, PK)
-- `user_id` (UUID, FK to auth.users)
-- `amount` (DECIMAL) - Positive for income, negative for expense
-- `currency` (VARCHAR) - Default 'INR'
-- `category` (VARCHAR)
-- `note` (TEXT)
-- `date` (DATE)
-- `created_at`, `updated_at` (TIMESTAMP)
+### Frontend (Vercel or Netlify)
 
-### budgets
-- `id` (UUID, PK)
-- `user_id` (UUID, FK)
-- `category` (VARCHAR)
-- `amount` (DECIMAL)
-- `period` (VARCHAR) - 'monthly', 'yearly'
+1. Push repository to GitHub
+2. Connect repository in Vercel or Netlify
+3. Add `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`
+4. Deploy
 
-### receipts
-- `id` (UUID, PK)
-- `user_id` (UUID, FK)
-- `transaction_id` (UUID, FK)
-- `file_path` (TEXT)
-- `file_name` (TEXT)
-- `image_url` (TEXT) — Signed URL from Supabase Storage
-- `ai_parsed_data` (JSONB) — Gemini Vision parsed result
-- `status` (VARCHAR) — `pending` | `parsed`
+### Supabase Edge Function (required for AI)
 
-### Storage: `receipts` bucket
-- Private bucket with per-user folder RLS
-- Users can only upload/view/delete files in their own `{user_id}/` folder
+```powershell
+npx supabase login
+npx supabase secrets set GEMINI_API_KEY=your_gemini_key --project-ref your-project-ref
+npx supabase functions deploy gemini-proxy --project-ref your-project-ref
+```
 
-## 🎨 shadcn Components
+Routes provided by `gemini-proxy`:
 
-This project uses the shadcn component structure:
-- Components live in `/components/ui`
-- Consistent with shadcn CLI conventions
-- Easy to add more primitives using `npx shadcn-ui@latest add <component>`
+- `POST /parse-receipt`
+- `POST /forecast-budget`
+- `POST /`
 
-**Why `/components/ui`?**
-- Industry standard for UI component libraries
-- Clear separation between UI primitives and app components
-- Compatible with shadcn CLI tooling
-- Makes imports predictable: `@/components/ui/card`
+## Database Snapshot
 
-## 🤝 Contributing
+Primary tables:
 
-This is a personal finance tracker. Feel free to fork and customize for your needs!
+- `transactions`: amount, category, note, date, currency, timestamps
+- `budgets`: budget amount per category and period
+- `receipts`: receipt file metadata + parsed AI payload
 
-## 📄 License
+Storage bucket:
 
-MIT License - feel free to use this project as a template.
+- `receipts` (private, user-scoped folder access)
 
-## 🙏 Credits
+## Credits
 
-- UI Components: Inspired by shadcn/ui
-- 3D Scenes: Powered by Spline
-- Icons: Lucide React
-- Backend: Supabase
-- AI: Google Gemini 2.0 Flash (Vision + Text)
+- Project done by Joshua Haniel J and N Omni Devi
+- UI inspiration: shadcn/ui
+- 3D scenes: Spline
+- Backend platform: Supabase
+- AI model: Google Gemini 2.0 Flash
 
----
+## License
 
-**Built with ❤️ for financial wellness in India** 🇮🇳
+MIT
