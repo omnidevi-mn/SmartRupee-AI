@@ -2,7 +2,7 @@
 
 Production-ready personal finance tracker for Indian users, built with React, TypeScript, Tailwind, and Supabase, with Gemini-powered AI features for receipts and budget forecasting.
 
-Project done by Joshua Haniel J and N Omni Devi.
+Project done by N Omni Devi.
 
 ## Why SmartRupee AI
 
